@@ -29,7 +29,8 @@
     <div class="background">
       <img width="100%" height="100%" :src="seller.avatar">
     </div>
-    <div v-show="detailShow" class="detail">
+    <transition name="fade">
+      <div v-show="detailShow" class="detail">
       <div class="detail-wrapper">
         <div class="detail-main">
           <h1 class="name">{{seller.name}}</h1>
@@ -52,12 +53,16 @@
             <div class="text">商家公告</div>
             <div class="line"></div>
           </div>
+          <div class="bulletin">
+            <p class="content">{{seller.bulletin}}</p>
+          </div>
         </div>
       </div>
-      <div class="detail-close">
+      <div class="detail-close" @click="hideDetail">
         <i class="icon-close"></i>
       </div>
     </div>
+    </transition>
   </div>
 </template>
 
@@ -78,6 +83,9 @@
     methods: {
       showDetail: function () {
         this.detailShow = true;
+      },
+      hideDetail: function () {
+        this.detailShow = false;
       }
     },
     created() {
@@ -208,7 +216,14 @@
       top: 0px
       left: 0px
       overflow: auto
+      backdrop-filter: blur(10px)
+      opacity: 1
       background: rgba(7, 17, 27, 0.8)
+      &.fade-enter-active, &.fade-leave-active
+        transition :all 0.5s
+      &.fade-enter, &.fade-leave-to
+        opacity: 0
+        background: rgba(7, 17, 27, 0)
       .detail-wrapper
         width: 100%
         min-height: 100%
@@ -268,6 +283,14 @@
               .text
                 line-height: 16px
                 font-size: 12px
+
+          .bulletin
+            width: 80%
+            margin: 0px auto
+            .content
+              padding: 0px 12px
+              line-height: 24px
+              font-size: 12px
 
   .detail-close
     position: relative
