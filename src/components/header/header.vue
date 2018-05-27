@@ -18,17 +18,25 @@
         </div>
       </div>
       d
-      <div v-if="seller.supports" class="support-count">
+      <div v-if="seller.supports" class="support-count" @click="showDetail">
         <span class="count">{{seller.supports.length}}个</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
-    <div class="bulletin-wrapper">
+    <div class="bulletin-wrapper" @click="showDetail">
       <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
       <i class="icon-keyboard_arrow_right"></i>
     </div>
     <div class="background">
       <img width="100%" height="100%" :src="seller.avatar">
+    </div>
+    <div v-show="detailShow" class="detail">
+      <div class="detail-wrapper">
+        <div class="detail-main"></div>
+      </div>
+      <div class="detail-close">
+        <i class="icon-close"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -38,6 +46,16 @@
     props: {
       seller: {
         type: Object
+      }
+    },
+    data() {
+      return {
+        detailShow: false
+      };
+    },
+    methods: {
+      showDetail: function () {
+        this.detailShow = true;
       }
     },
     created() {
@@ -53,6 +71,7 @@
     position relative
     color: #fff
     background: rgba(7, 17, 27, 0.5)
+    overflow: hidden
     .content-wrapper
       position: relative
       padding: 24px 12px 18px 24px
@@ -156,4 +175,25 @@
       height 100%
       z-index: -1
       filter: blur(10px)
+    .detail
+      position: fixed
+      z-index: 100
+      width: 100%
+      height: 100%
+      top: 0px
+      left: 0px
+      overflow: auto
+      background: rgba(7, 17, 27, 0.8)
+      .detail-wrapper
+        min-height: 100%
+        .detail-main
+          margin-top: 64px
+          padding-bottom: 64px
+      .detail-close
+        position: relative
+        width: 32px
+        height: 32px
+        font-size: 32px
+        margin: -64px auto 0px auto
+        clear: both
 </style>
