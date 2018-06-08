@@ -93,7 +93,8 @@
           click: true
         });
         this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
-          probeType: 3
+          probeType: 3,
+          click: true
         });
 
         // 监听滚动时右侧滑动的距离
