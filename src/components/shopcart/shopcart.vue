@@ -32,7 +32,7 @@
           <h1 class="title">购物车</h1>
           <span class="empty">清空</span>
         </div>
-        <div class="list-content">
+        <div class="list-content" ref="listContent">
           <ul>
             <li class="food" v-for="(food,index) in selectFoods" v-bind:key="index">
               <span class="name">{{food.name}}</span>
@@ -52,6 +52,7 @@
 
 <script type="text/ecmascript-6">
   import cartcontrol from 'components/cartcontrol/cartcontrol';
+  import BScroll from 'better-scroll';
 
   export default {
     props: {
@@ -157,6 +158,26 @@
         this.fold = !this.fold;
       }
     },
+    watch: {
+      fold: function (val) {
+        if (val === false) {
+          this.$nextTick(() => {
+            if (!this.scroll) {
+              this.scroll = new BScroll(this.$refs.listContent, {
+                click: true
+              });
+            } else {
+              this.scroll.refresh();
+            }
+          });
+        }
+      },
+      selectFoods: function () {
+        if (this.selectFoods.length === 0) {
+          this.fold = true;
+        }
+      }
+    },
     computed: {
       totoalPrice: function () {
         let total = 0;
@@ -190,6 +211,7 @@
         }
       },
       listShow: function () {
+        // 之所以添加两个watch的原因是，触发listShow的只有两种可能，要么是selectFoods发生了变化，要么是fold发生了变化，因此把原本要在这个方法里改变元素的的方法移植到两个watch即可！
         if (!this.totalCount) {
           return false;
         }
