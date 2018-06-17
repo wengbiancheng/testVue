@@ -26,10 +26,31 @@
         </transition>
       </div>
     </div>
+    <div class="shopcart-list">
+      <div class="list-header">
+        <h1 class="title">购物车</h1>
+        <span class="empty">清空</span>
+      </div>
+      <div class="list-content">
+        <ul>
+          <li class="food" v-for="(food,index) in selectFoods" v-bind:key="index">
+            <span class="name">{{food.name}}</span>
+            <div class="price">
+              <span>￥{{food.price * food.count}}</span>
+            </div>
+            <div class="cartcontrol-wrapper">
+              <cartcontrol :food="food"></cartcontrol>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import cartcontrol from 'components/cartcontrol/cartcontrol';
+
   export default {
     props: {
       selectFoods: {
@@ -76,7 +97,6 @@
     },
     methods: {
       drop: function (el) {
-        console.log(el);
         for (let i = 0; i < this.balls.length; i++) {
           let ball = this.balls[i];
           if (!ball.show) {
@@ -159,6 +179,9 @@
           return 'enough';
         }
       }
+    },
+    components: {
+      cartcontrol
     }
   };
 </script>
