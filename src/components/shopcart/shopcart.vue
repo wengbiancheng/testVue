@@ -1,6 +1,6 @@
 <template>
   <div class="shopcart">
-    <div class="content">
+    <div class="content" @click="toggleList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight':totalCount>0}">
@@ -26,7 +26,7 @@
         </transition>
       </div>
     </div>
-    <div class="shopcart-list">
+    <div class="shopcart-list" v-show="listShow">
       <div class="list-header">
         <h1 class="title">购物车</h1>
         <span class="empty">清空</span>
@@ -92,7 +92,8 @@
             show: false
           }
         ],
-        dropBalls: []
+        dropBalls: [],
+        fold: true
       };
     },
     methods: {
@@ -145,6 +146,13 @@
           ball.show = false;
           el.style.display = 'none';
         }
+      },
+      toggleList: function () {
+        if (!this.totalCount) {
+          this.fold = true;
+          return;
+        }
+        this.fold = !this.fold;
       }
     },
     computed: {
@@ -178,6 +186,13 @@
         } else {
           return 'enough';
         }
+      },
+      listShow: function () {
+        if (!this.totalCount) {
+          return false;
+        }
+        let show = !this.fold;
+        return show;
       }
     },
     components: {
