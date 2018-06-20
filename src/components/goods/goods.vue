@@ -28,8 +28,7 @@
                     <span class="count">月售{{food.sellCount}}份</span><span>好评率{{food.rating}}%</span>
                   </div>
                   <div class="price">
-                    <span class="now"><span class="now-flag">￥</span>{{food.price}}</span><span v-show="food.oldPrice"
-                                                                                                class="old">￥{{food.oldPrice}}</span>
+                    <span class="now"><span class="now-flag">￥</span>{{food.price}}</span><span v-show="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
                     <cartcontrol :food="food" @add="addFood"></cartcontrol>
@@ -43,7 +42,7 @@
       <shopcart ref="shopcart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"
                 :min-price="seller.minPrice"></shopcart>
     </div>
-    <food :food="selectedFood" :show-flag="showFlag"></food>
+    <food :food="selectedFood" :show-flag="showFlag" @hide="hide" @add="addFood"></food>
   </div>
 </template>
 
@@ -156,6 +155,9 @@
         }
         this.selectedFood = food;
         this.showFlag = true;
+      },
+      hide: function () {
+        this.showFlag = false;
       }
     },
     components: {
