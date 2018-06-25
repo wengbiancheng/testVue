@@ -31,11 +31,26 @@
             <h1 class="title">商品信息</h1>
             <p class="text">{{food.info}}</p>
           </div>
-          <split></split>
+          <splitnp></splitnp>
           <div class="rating">
             <h1 class="title">商品评价</h1>
             <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc"
                           :ratings="food.ratings" @select="selectRating" @toggle="toggleContent"></ratingselect>
+          </div>
+          <div class="rating-wrapper">
+            <ul v-show="food.ratings && food.ratings.length">
+              <li v-for="(rating,index) in food.ratings" v-bind:key="index" class="rating-item border-1px">
+                <div class="user">
+                  <span class="name">{{rating.username}}</span>
+                  <img :src="rating.avatar" width="12" height="12" class="avatar">
+                </div>
+                <div class="time">{{rating.rateTime}}</div>
+                <p class="text">
+                  <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>{{rating.text}}
+                </p>
+              </li>
+            </ul>
+            <div class="no-rating" v-show="!food.ratings || !food.ratings.length">暂无评价</div>
           </div>
         </div>
       </div>
@@ -118,6 +133,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin.styl"
   .food
     position: fixed
     left: 0
@@ -222,4 +238,43 @@
         line-height: 14px
         margin-left: 18px
         font-size: 14px
+    .rating-wrapper
+      padding: 0px 18px
+      .rating-item
+        position: relative
+        padding: 16px 0px
+        border-1px(rgba(7, 17, 27, 0.1))
+        .user
+          position: absolute
+          right: 0px
+          top: 16px
+          line-height: 12px
+          font-size: 0
+          .name
+            display: inline-block
+            vertical-align: top
+            margin-right: 6px
+            font-size: 10px
+            color: rgb(147, 153, 159)
+          .avatar
+            display: inline-block
+            vertical-align: top
+            border-radius: 50%
+        .time
+          margin-bottom: 6px
+          line-height: 12px
+          font-size: 10px
+          color: rgb(147, 153, 159)
+        .text
+          line-height: 16px
+          font-size: 12px
+          color: rgb(147, 153, 159)
+          .icon-thumb_up, .icon-thumb_down
+            margin-right: 4px
+            line-height: 16px
+            font-size: 12px
+          .icon-thumb_up
+            color: rgb(0, 160, 220)
+          .icon-thumb_down
+            color: rgb(147, 153, 159)
 </style>
