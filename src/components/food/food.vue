@@ -39,7 +39,8 @@
           </div>
           <div class="rating-wrapper">
             <ul v-show="food.ratings && food.ratings.length">
-              <li v-for="(rating,index) in food.ratings" v-bind:key="index" class="rating-item border-1px">
+              <li v-show="needShow(rating.rateType,rating.text)" v-for="(rating,index) in food.ratings" v-bind:key="index"
+                  class="rating-item border-1px">
                 <div class="user">
                   <span class="name">{{rating.username}}</span>
                   <img :src="rating.avatar" width="12" height="12" class="avatar">
@@ -104,9 +105,26 @@
       },
       selectRating: function (type) {
         this.selectType = type;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
       },
       toggleContent: function () {
         this.onlyContent = !this.onlyContent;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      needShow: function (type, text) {
+        // 使用computed和methods返回的值是一样的，都能动态变化
+        if (this.onlyContent && !text) {
+          return false;
+        }
+        if (this.selectType === ALL) {
+          return true;
+        } else {
+          return type === this.selectType;
+        }
       }
     },
     watch: {
