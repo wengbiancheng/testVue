@@ -31,7 +31,7 @@
             <h1 class="title">商品信息</h1>
             <p class="text">{{food.info}}</p>
           </div>
-          <splitnp></splitnp>
+          <split></split>
           <div class="rating">
             <h1 class="title">商品评价</h1>
             <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc"

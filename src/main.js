@@ -15,7 +15,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 const routers = [
-  {path: '/', component: goods},
+  {path: '/', component: ratings},
   {path: '/goods', component: goods},
   {path: '/ratings', component: ratings},
   {path: '/seller', component: seller}
