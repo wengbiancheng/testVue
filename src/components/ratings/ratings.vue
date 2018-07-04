@@ -29,20 +29,20 @@
                     :ratings="ratings"></ratingselect>
       <div class="rating-wrapper">
         <ul>
-          <li v-for="(rating,index) in ratings" v-bind:key="index" class="rating-item">
+          <li v-for="(rating,index) in ratings" v-bind:key="index" class="rating-item border-1px">
             <div class="avatar">
               <img :src="rating.avatar" width="28" height="28">
             </div>
             <div class="content">
               <h1 class="name">{{rating.username}}</h1>
               <div class="star-wrapper">
-                <star :size="24" :score="rating.score"></star>
+                <star :size="24" :score="rating.score" class="star"></star>
                 <span class="delivery" v-show="rating.deliveryTime">{{rating.deliveryTime}}分钟送达</span>
               </div>
               <p class="text">{{rating.text}}</p>
-              <div class="recommend">
+              <div class="recommend" v-show="rating.recommend && rating.recommend.length">
                 <span class="icon-thumb_up"></span>
-                <span v-for="(item,index) in rating.recommend" v-bind:key="index">{{item}}</span>
+                <span v-for="(item,index) in rating.recommend" v-bind:key="index" class="item">{{item}}</span>
               </div>
               <div class="time">
                 {{rating.rateTime | formatDate}}
@@ -110,6 +110,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin.styl"
   .ratings
     position: absolute
     top: 174px
@@ -175,5 +176,64 @@
           .delivery
             margin-left: 12px
             font-size: 12px
+            color: rgb(147, 153, 159)
+    .rating-wrapper
+      padding: 0px 18px
+      .rating-item
+        display: flex
+        padding: 18px 0px
+        border-1px(rgba(7, 17, 27, 0.1))
+        .avatar
+          flex: 0 0 28px
+          width: 28px
+          margin-right: 12px
+          img
+            border-radius: 50%
+        .content
+          position: relative
+          flex: 1
+          .name
+            margin-bottom: 4px
+            line-height: 12px
+            font-size: 10px
+            color: rgb(7, 17, 27)
+          .star-wrapper
+            margin-bottom: 6px
+            font-size: 0
+            .star
+              display: inline-block
+              margin-right: 6px
+              vertical-align: top
+            .delivery
+              display: inline-block
+              vertical-align: top
+              line-height: 12px
+              font-size: 10px
+              color: rgb(7, 17, 27)
+          .text
+            margin-bottom: 8px
+            line-height: 18px
+            color: rgb(7, 17, 27)
+            font-size: 12px
+          .recommend
+            line-height: 16px
+            .icon-thumb_up, .item
+              display: inline-block
+              margin: 0px 8px 4px 0px
+              font-size: 9px
+            .icon-thumb_up
+              color: rgb(0, 160, 220)
+            .item
+              padding: 0px 6px
+              border: 1px solid rgba(7, 17, 27, 0.1)
+              border-radius: 1px
+              color: rgb(147, 153, 159)
+              background: #fff
+          .time
+            position: absolute
+            top: 0px
+            right: 0px
+            line-height: 12px
+            font-size: 10px
             color: rgb(147, 153, 159)
 </style>
