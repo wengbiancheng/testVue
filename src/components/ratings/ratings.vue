@@ -25,11 +25,12 @@
         </div>
       </div>
       <split></split>
-      <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc"
-                    :ratings="ratings"></ratingselect>
+      <ratingsrelect :select-type="selectType" :only-content="onlyContent" :ratings="ratings" @select="selectRating"
+                    @toggle="toggleContent"></ratingsrelect>
       <div class="rating-wrapper">
         <ul>
-          <li v-for="(rating,index) in ratings" v-bind:key="index" class="rating-item border-1px">
+          <li v-for="(rating,index) in ratings" v-bind:key="index" class="rating-item border-1px"
+              v-show="needShow(rating.rateType,rating.text)">
             <div class="avatar">
               <img :src="rating.avatar" width="28" height="28">
             </div>
@@ -74,13 +75,33 @@
       return {
         ratings: [],
         selectType: ALL,
-        onlyContent: true,
-        desc: {
-          all: '全部',
-          positive: '推荐',
-          negative: '吐槽'
-        }
+        onlyContent: true
       };
+    },
+    methods: {
+      selectRating: function (type) {
+        this.selectType = type;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      toggleContent: function () {
+        this.onlyContent = !this.onlyContent;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      needShow: function (type, text) {
+        // 使用computed和methods返回的值是一样的，都能动态变化
+        if (this.onlyContent && !text) {
+          return false;
+        }
+        if (this.selectType === ALL) {
+          return true;
+        } else {
+          return type === this.selectType;
+        }
+      }
     },
     components: {
       star,
