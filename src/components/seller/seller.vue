@@ -42,6 +42,17 @@
           </li>
         </ul>
       </div>
+      <split></split>
+      <div class="pics">
+        <h1 class="title">商家实景</h1>
+        <div class="pic-wrapper" ref="picWrapper">
+          <ul class="pic-list" ref="picList">
+            <li class="pic-item" v-for="(pic,index) in seller.pics" v-bind:key="index">
+              <img :src="pic" width="120" height="90">
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -67,12 +78,14 @@
     mounted() {
       this.$nextTick(() => {
         this._initScroll();
+        this._initPics();
       });
     },
     watch: {
       seller: function (val) {
         this.$nextTick(() => {
           this._initScroll();
+          this._initPics();
         });
       }
     },
@@ -85,6 +98,24 @@
         } else {
           this.scroll.refresh();
         }
+      },
+      _initPics() {
+        if (this.seller && this.seller.pics) {
+          let picWidth = 120;
+          let margin = 6;
+          let width = (picWidth + margin) * this.seller.pics.length - margin;
+          this.$refs.picList.style.width = width + 'px';
+          this.$nextTick(() => {
+            if (!this.picScroll) {
+              this.picScroll = new BScroll(this.$refs.picWrapper, {
+                scrollX: true,
+                eventPassthrough: 'vertical'
+              });
+            } else {
+              this.picScroll.refresh();
+            }
+          });
+        }
       }
     }
   };
@@ -94,7 +125,7 @@
   @import "../../common/stylus/mixin.styl"
   .seller
     position: absolute
-    top: 174 px
+    top: 174px
     bottom: 0px
     left: 0px
     width: 100%
@@ -156,31 +187,51 @@
           line-height: 24px
           font-size: 12px
           color: rgb(240, 20, 20)
-    .supports
-      .support-item
-        padding: 16px 12px
-        border-1px(rgba(7, 17, 27, 0.1))
-        font-size: 0px
-        .icon
-          display: inline-block
-          vertical-align: top
-          width: 16px
-          height: 16px
-          margin-right: 6px
-          background-size: 16px 16px
-          background-repeat: no-repeat
-          &.decrease
-            bg-image('decrease_4')
-          &.discount
-            bg-image('discount_4')
-          &.guarantee
-            bg-image('guarantee_4')
-          &.invoice
-            bg-image('invoice_4')
-          &.special
-            bg-image('special_4')
-        .text
-          line-height: 16px
-          font-size: 12px
-          color: rgb(7, 17, 27)
+      .supports
+        .support-item
+          padding: 16px 12px
+          border-1px(rgba(7, 17, 27, 0.1))
+          font-size: 0px
+          .icon
+            display: inline-block
+            vertical-align: top
+            width: 16px
+            height: 16px
+            margin-right: 6px
+            background-size: 16px 16px
+            background-repeat: no-repeat
+            &.decrease
+              bg-image('decrease_4')
+            &.discount
+              bg-image('discount_4')
+            &.guarantee
+              bg-image('guarantee_4')
+            &.invoice
+              bg-image('invoice_4')
+            &.special
+              bg-image('special_4')
+          .text
+            line-height: 16px
+            font-size: 12px
+            color: rgb(7, 17, 27)
+    .pics
+      padding: 18px
+      .title
+        margin-bottom: 12px
+        line-height: 14px
+        font-size: 14px
+        color: rgb(7, 17, 27)
+      .pic-wrapper
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        .pic-list
+          font-size: 0px
+          .pic-item
+            display: inline-block
+            width: 120px
+            height: 90px
+            margin-right: 6px
+            &.last-child
+              margin: 0px
 </style>
