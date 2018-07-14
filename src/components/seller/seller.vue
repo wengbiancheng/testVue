@@ -6,7 +6,7 @@
         <div class="desc">
           <star :size="36" :score="seller.score" class="star"></star>
           <span class="text">({{seller.ratingCount}})</span>
-          <span class="text">{{seller.sellCount}}</span>
+          <span class="text">月售{{seller.sellCount}}单</span>
         </div>
         <ul class="remark">
           <li class="block">
@@ -28,6 +28,10 @@
             </div>
           </li>
         </ul>
+        <div class="favorite" @click="toggleFavorite">
+          <span class="icon-favorite" :class="{'active':favorite}"></span>
+          <span class="text">{{favoriteText}}</span>
+        </div>
       </div>
       <split></split>
       <div class="bulletin">
@@ -73,6 +77,16 @@
     props: {
       seller: {
         type: Object
+      }
+    },
+    data() {
+      return {
+        favorite: false
+      };
+    },
+    computed: {
+      favoriteText: function () {
+        return this.favorite ? '已收藏' : '未收藏';
       }
     },
     components: {
@@ -123,6 +137,12 @@
             }
           });
         }
+      },
+      toggleFavorite: function (event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.favorite = !this.favorite;
       }
     }
   };
@@ -138,6 +158,7 @@
     width: 100%
     overflow: hidden
     .overview
+      position: relative
       padding: 18px
       .title
         margin-bottom: 8px
@@ -180,6 +201,20 @@
             color: rgb(7, 17, 27)
             .stress
               font-size: 24px
+      .favorite
+        position: absolute
+        width: 50px
+        right: 11px
+        top: 18px
+        text-align: center
+        .icon-favorite
+          display: block
+          margin-bottom: 4px
+          line-height: 24px
+          font-size: 24px
+          color: #d4d6d9
+          &.active
+            color: rgb(240, 20, 20)
     .bulletin
       padding: 18px 18px 0px 18px
       .title
